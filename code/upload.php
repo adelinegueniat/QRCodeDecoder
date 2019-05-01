@@ -4,6 +4,7 @@ require __DIR__ . "/vendor/autoload.php";
 $target_dir = "uploads/";
 $uploadOk = 1;
 $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+$qrCodeText = NULL;
 
 // Count how many files have been uploaded
 $arr_length = count($_FILES["filesToUpload"]["name"]);
@@ -22,22 +23,27 @@ if(isset($_POST["submit"])) {
     }
 }
 
+//Check if image is a QRCode
+    $qrcode = new Zxing\QrReader($_FILES["filesToUpload"]["tmp_name"][$i]);
+    $text = $qrcode->text();
+    if ($text == NULL){
+        $isQRCode = false;
+    }
+    else {$isQRCode = true;
+    $qrCodeText = $text;
+    }
+
 // Check if $uploadOk is set to 0 by an error
 if ($uploadOk == 0) {
     echo "Sorry, your file was not uploaded.";
 // if everything is ok, try to upload file
 } else {
+    if ($isQRCode == false){
+    $target_file = $target_dir . $qrCodeText . '_' . basename($_FILES["filesToUpload"]["name"][$i]);
     if (move_uploaded_file($_FILES["filesToUpload"]["tmp_name"][$i], $target_file)) {
-        echo "The file ". basename( $_FILES["filesToUpload"]["name"][$i]). " has been uploaded.";
-        echo "<br>";
-        $qrcode = new Zxing\QrReader($target_file);
-        $text = $qrcode->text(); //return decoded text from QR Code
-        if ($text == NULL){
-            echo "Not a QRCode";}
-        echo $text;
-        echo "<br>";
+        echo "The file ". basename( $_FILES["filesToUpload"]["name"][$i]). " has been uploaded.<br>";
     } else {
         echo "Sorry, there was an error uploading your file.";
-    }
+    }}
 }}
 ?>
