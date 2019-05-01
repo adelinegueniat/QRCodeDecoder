@@ -11,3 +11,6 @@ php:
     build: .
     volumes:
         - ./code:/code
+        - ./php-ini:/usr/local/etc/php/custom.d
+    environment:
+        PHP_INI_SCAN_DIR: "/usr/local/etc/php/custom.d:/usr/local/etc/php/conf.d"

@@ -5,7 +5,6 @@ $target_dir = "uploads/";
 $uploadOk = 1;
 $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 $qrCodeText = NULL;
-
 // Count how many files have been uploaded
 $arr_length = count($_FILES["filesToUpload"]["name"]);
 
