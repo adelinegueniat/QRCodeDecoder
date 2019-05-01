@@ -1,7 +1,9 @@
-<?php
-require __DIR__ . "/vendor/autoload.php";
-
-$qrcode = new Zxing\QrReader('qrcodes/qr55.png');
-$text = $qrcode->text(); //return decoded text from QR Code
-echo $text;
-?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Menu</title>
+</head>
+<body>
+<a href="index2.php">Générer un QR Code manuellement</a> <br>
+<a href="selectfiles.php">Uploader des images et les renommer selon un QR Code</a> </body>
+</html>
