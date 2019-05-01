@@ -4,6 +4,8 @@ require __DIR__ . "/vendor/autoload.php";
 $target_dir = "uploads/";
 $uploadOk = 1;
 $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+
+// Count how many files have been uploaded
 $arr_length = count($_FILES["filesToUpload"]["name"]);
 
 for($i=0; $i<$arr_length; $i++){
@@ -13,8 +15,6 @@ for($i=0; $i<$arr_length; $i++){
 if(isset($_POST["submit"])) {
     $check = getimagesize($_FILES["filesToUpload"]["tmp_name"][$i]);
     if($check !== false) {
-        echo "File is an image - " . $check["mime"] . ".";
-        echo "<br>";
         $uploadOk = 1;
     } else {
         echo "File is not an image.";
@@ -32,8 +32,10 @@ if ($uploadOk == 0) {
         echo "<br>";
         $qrcode = new Zxing\QrReader($target_file);
         $text = $qrcode->text(); //return decoded text from QR Code
+        if ($text == NULL){
+            echo "Not a QRCode";}
         echo $text;
-
+        echo "<br>";
     } else {
         echo "Sorry, there was an error uploading your file.";
     }
